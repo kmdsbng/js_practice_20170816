@@ -9,24 +9,86 @@
   <p id="greetspace"></p>
 
   <script tyoe="text/javascript">
-    var myName = '＿＿＿＿と申します';
-    var myNameLen = myName.length;
-    document.getElementById('greetspace').style.webkitTransitionDuration = '3s';
-    document.getElementById('greetspace').style.opacity = 0;
-    document.getElementById('greetspace').textContent = 'どうぞよろしくお願い申し上げます。'
 
-    var count = function() {
-      var currentName = document.getElementById('namespace').textContent;
-      var currentNameLen = currentName.length;
-      if (myNameLen > currentNameLen) {
-        document.getElementById('namespace').textContent = myName.substr(0, currentNameLen + 1);
-      } else {
-        clearInterval(setltv);
-        document.getElementById('greetspace').style.opacity = 1;
+    class Name {
+      constructor(value) {
+        this.value = value;
+      }
+
+      nameWithPostfix() {
+        return this.value + 'と申します。';
+      }
+
+      length() {
+        return this.nameWithPostfix().length
+      }
+
+      startOf(len) {
+        return this.nameWithPostfix().substr(0, len);
       }
     }
 
-    var setltv = setInterval(count, 500);
+    class NameRenderer {
+      constructor(node, name) {
+        this.node = node;
+        this.name = name;
+      }
+
+      showStartOf(length) {
+        this.node.textContent = this.name.startOf(length);
+      }
+    }
+
+    class GreetRenderer {
+      constructor(node) {
+        this.node = node;
+      }
+
+      initialize() {
+        this.node.style.webkitTransitionDuration = '3s';
+        this.node.style.opacity = 0;
+        this.node.textContent = 'どうぞよろしくお願い申し上げます。'
+      }
+
+      showWithAnimation() {
+        this.node.style.opacity = 1;
+      }
+    }
+
+    class NameCount {
+      constructor() {
+        this.count = 0;
+      }
+
+      increment() {
+        this.count += 1;
+      }
+
+      getCount() {
+        return this.count;
+      }
+    }
+
+    var myName = new Name('半沢直樹');
+    var nameSpaceElement = document.getElementById('namespace');
+    var greetSpaceElement = document.getElementById('greetspace');
+    var nameRenderer = new NameRenderer(nameSpaceElement, myName);
+    var greetRenderer = new GreetRenderer(greetSpaceElement);
+    var nameCount = new NameCount();
+
+    greetRenderer.initialize();
+
+    function showNameIteratable() {
+      nameCount.increment();
+      if (myName.length() > nameCount.getCount()) {
+        nameRenderer.showStartOf(nameCount.getCount());
+      } else {
+        clearInterval(setltv);
+        greetRenderer.showWithAnimation();
+      }
+    }
+
+    var setltv = setInterval(showNameIteratable, 500);
   </script>
 
 </body>
