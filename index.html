@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+  <p id="namespace"></p>
+  <p id="greetspace"></p>
+
+  <script tyoe="text/javascript">
+    var myName = '＿＿＿＿と申します';
+    var myNameLen = myName.length;
+    document.getElementById('greetspace').style.webkitTransitionDuration = '3s';
+    document.getElementById('greetspace').style.opacity = 0;
+    document.getElementById('greetspace').textContent = 'どうぞよろしくお願い申し上げます。'
+
+    var count = function() {
+      var currentName = document.getElementById('namespace').textContent;
+      var currentNameLen = currentName.length;
+      if (myNameLen > currentNameLen) {
+        document.getElementById('namespace').textContent = myName.substr(0, currentNameLen + 1);
+      } else {
+        clearInterval(setltv);
+        document.getElementById('greetspace').style.opacity = 1;
+      }
+    }
+
+    var setltv = setInterval(count, 500);
+  </script>
+
+</body>
+</html>
+
+
